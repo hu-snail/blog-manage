@@ -60,7 +60,11 @@ div:focus {
 }
 
 // main-container global css
-.app-container {
+.app-main {
   padding: 20px;
   background-color: $appBg;
+}
+.app-container{
+  background-color: #fff;
+  padding: 20px;
 }

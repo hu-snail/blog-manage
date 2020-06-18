@@ -52,7 +52,7 @@ export const constantRoutes = [
       name: 'Dashboard',
       alwaysShow: true,
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '数据统计', icon: 'el-icon-pie-chart', affix: true }
+      meta: { title: '数据统计', icon: 'el-icon-s-data', affix: true }
     }]
   }
 ]
@@ -66,12 +66,20 @@ export const asyncRoutes = [
     path: '/article',
     component: Layout,
     redirect: '/article/index',
+    meta: { title: '文章管理', icon: 'el-icon-notebook-1' },
     children: [
       {
         path: 'index',
         name: 'Article',
         component: () => import('@/views/article/index'),
-        meta: { title: '文章管理', icon: 'el-icon-notebook-1' }
+        meta: { title: '文章管理' }
+      },
+      {
+        path: 'add',
+        name: 'ArticleAdd',
+        hidden: true,
+        component: () => import('@/views/article/Add'),
+        meta: { title: '文章管理-新建', activeMenu: '/article/index' }
       }
     ]
   },

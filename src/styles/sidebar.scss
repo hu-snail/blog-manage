@@ -121,18 +121,12 @@
       overflow: hidden;
 
       &>.el-submenu__title {
-        padding: 0 !important;
-
         .svg-icon {
           margin-left: 20px;
         }
 
         .sub-el-icon {
           margin-left: 19px;
-        }
-
-        .el-submenu__icon-arrow {
-          display: none;
         }
       }
     }
