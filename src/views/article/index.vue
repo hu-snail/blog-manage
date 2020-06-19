@@ -22,7 +22,7 @@
                 v-contextmenu:contextmenu
                 :index="index.toString()"
                 :class="{'no-data': !item.children.length}"
-                @click.native="handleSubMenu(index)"
+                @click.native="handleSubMenu(index, item._id)"
               >
                 <div v-show="item.isAdd" class="add-document">
                   <el-input
@@ -39,6 +39,7 @@
                   :key="i"
                   v-contextmenu:contextmenu2
                   :index="index.toString() + '-' + i.toString()"
+                  @click.native="changeCatalogId(option.id)"
                 >
                   <i class="el-icon-document" />
                   {{ option.title }}.md
@@ -49,7 +50,11 @@
         </div>
       </div>
       <div class="right">
-        <Editor />
+        <Editor
+          v-show="catalogId"
+          v-model="form.content"
+          @on-save="handleSave"
+        />
       </div>
     </div>
     <el-dialog
@@ -91,12 +96,13 @@
 
 <script>
 import Editor from '@/components/Editor'
+import { getArticle, articleAdd } from '@/api/article'
 import {
   directive,
   Contextmenu,
   ContextmenuItem
 } from 'v-contextmenu'
-import MixinData from './Mixin'
+import CatalogMixin from './catalogMixin'
 export default {
   components: { Editor, Contextmenu, ContextmenuItem },
   directives: {
@@ -108,7 +114,7 @@ export default {
 
     }
   },
-  mixins: [MixinData],
+  mixins: [CatalogMixin],
   data() {
     return {
       list: null,
@@ -117,15 +123,10 @@ export default {
       openedIndex: ['0'],
       dialogVisible: false,
       resetTitle: '',
-      menuData: [{
-        title: 'Vue笔记',
-        isAdd: false,
-        children: [{
-          title: 'watch'
-        }, {
-          title: 'mixin'
-        }]
-      }],
+      menuData: [],
+      form: {},
+      catalogId: 0,
+      pid: 0,
       listLoading: true,
       title: '',
       doucmentTitle: '',
@@ -134,53 +135,41 @@ export default {
       isFolder: true // 是否是一级菜单
     }
   },
+
   methods: {
-    handleBlurFolder() {
-      this.title = ''
-      this.showAdd = false
+    /**
+     * 保存文档
+     * @param {*} render HTML渲染数据
+     */
+    handleSave(render) {
+      const renderContent = render
+      if (this.form.content) this.articleAdd(renderContent)
+      else this.$message.warning('请填写文档内容')
     },
-    handleSubMenu(index) {
-      this.openedIndex = [index.toString()]
+
+    changeCatalogId(id) {
+      this.catalogId = id
+      this.getArticle()
     },
-    contextmenuShow(e) {
-      this.isFolder = true
-      event.preventDefault()
-      event.cancelBubble = true
-      this.contextmenuIndex = e.data.key
+
+    /** 根据栏目id查询文档*/
+    getArticle() {
+      const catalogId = this.catalogId
+      getArticle({ catalogId }).then(res => {
+        this.form = res.data
+      })
     },
-    contextmenuShow2(e) {
-      this.isFolder = false
-      event.preventDefault()
-      event.cancelBubble = true
-      this.contextmenuItemIndex = e.data.key
-    },
-    handleAddFolder() {
-      this.showAdd = true
-    },
-    handleConfirm() {
-      if (this.title) {
-        this.menuData.unshift({ title: this.title, isAdd: false, children: [] })
-        this.title = ''
-        this.showAdd = false
-      }
-    },
-    handleCancel() {
-      this.showAdd = false
-      this.title = ''
-    },
-    handleChangeDocument(index) {
-      if (this.doucmentTitle) {
-        this.menuData[index].children.unshift({ title: this.doucmentTitle })
-        this.menuData[index].isAdd = false
-        this.doucmentTitle = ''
-      } else this.menuData[index].isAdd = false
-    },
-    handleUpadteTitle() {
-      this.isFolder
-        ? this.menuData[this.contextmenuIndex].title = this.resetTitle
-        : this.menuData[this.contextmenuIndex].children[this.contextmenuItemIndex].title = this.resetTitle
-      this.$message.success('修改成功')
-      this.dialogVisible = false
+
+    /**
+     * 文档新增
+     */
+    articleAdd(renderContent) {
+      const catalogId = this.catalogId
+      const { content, _id } = this.form
+      articleAdd({ catalogId, content, _id, renderContent }).then(res => {
+        this.$message.success('保存文档成功')
+        this.getArticle()
+      }).catch(() => this.$message.error('保存文档失败'))
     }
   }
 }

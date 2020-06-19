@@ -1,6 +1,10 @@
 <template>
   <div id="editor">
-    <mavon-editor v-model="content" style="height: 100%" />
+    <mavon-editor
+      v-model="content"
+      style="height: 100%"
+      @save="handleSave"
+    />
   </div>
 </template>
 <script>
@@ -11,17 +15,29 @@ export default {
   components: {
     mavonEditor
   },
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       content: ''
     }
   },
   watch: {
-    content: {
+    value: {
       immediate: true,
       handler(val) {
-        console.log(val)
+        this.content = val
       }
+    }
+  },
+  methods: {
+    handleSave(val, render) {
+      this.$emit('input', val)
+      this.$emit('on-save', render)
     }
   }
 }
