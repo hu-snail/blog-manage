@@ -11,6 +11,11 @@ export default {
   data() {
     return {
       contextmenuList: [{
+        title: '新建文档',
+        icon: 'document-add',
+        type: 'documentAdd',
+        isShow: true
+      }, {
         title: '重命名',
         icon: 'edit-outline',
         type: 'edit',
@@ -19,11 +24,6 @@ export default {
         title: '删除目录',
         icon: 'folder-remove',
         type: 'folderRemove',
-        isShow: true
-      }, {
-        title: '新建文档',
-        icon: 'document-add',
-        type: 'documentAdd',
         isShow: true
       }],
       contextmenuItemList: [{

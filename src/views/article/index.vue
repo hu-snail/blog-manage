@@ -106,6 +106,7 @@ import {
 } from 'v-contextmenu'
 import CatalogMixin from './catalogMixin'
 export default {
+  name: 'Article',
   components: { Editor, Contextmenu, ContextmenuItem },
   directives: {
     contextmenu: directive,
