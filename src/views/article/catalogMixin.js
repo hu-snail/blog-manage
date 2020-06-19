@@ -13,15 +13,18 @@ export default {
       contextmenuList: [{
         title: '重命名',
         icon: 'edit-outline',
-        type: 'edit'
+        type: 'edit',
+        isShow: true
       }, {
         title: '删除目录',
         icon: 'folder-remove',
-        type: 'folderRemove'
+        type: 'folderRemove',
+        isShow: true
       }, {
         title: '新建文档',
         icon: 'document-add',
-        type: 'documentAdd'
+        type: 'documentAdd',
+        isShow: true
       }],
       contextmenuItemList: [{
         title: '重命名',
@@ -175,6 +178,8 @@ export default {
       event.cancelBubble = true
       this.contextmenuIndex = e.data.key
       this.pid = this.menuData[e.data.key]._id
+      if (this.menuData[e.data.key].children.length) this.contextmenuList[1].isShow = false
+      else this.contextmenuList[1].isShow = true
     },
 
     /**

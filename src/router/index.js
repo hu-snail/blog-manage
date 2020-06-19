@@ -73,13 +73,6 @@ export const asyncRoutes = [
         name: 'Article',
         component: () => import('@/views/article/index'),
         meta: { title: '文章管理' }
-      },
-      {
-        path: 'add',
-        name: 'ArticleAdd',
-        hidden: true,
-        component: () => import('@/views/article/Add'),
-        meta: { title: '文章管理-新建', activeMenu: '/article/index' }
       }
     ]
   },

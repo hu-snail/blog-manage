@@ -72,14 +72,16 @@
     </el-dialog>
     <!--  contextmenu start -->
     <contextmenu ref="contextmenu" @contextmenu="contextmenuShow">
-      <contextmenu-item
-        v-for="(item, index) in contextmenuList"
-        :key="index"
-        @click="handleOperat(item.type)"
-      >
-        <i :class="'el-icon-' + item.icon" />
-        {{ item.title }}
-      </contextmenu-item>
+      <template v-for="(item, index) in contextmenuList">
+        <contextmenu-item
+          v-if="item.isShow"
+          :key="index"
+          @click="handleOperat(item.type)"
+        >
+          <i :class="'el-icon-' + item.icon" />
+          {{ item.title }}
+        </contextmenu-item>
+      </template>
     </contextmenu>
     <contextmenu ref="contextmenu2" @contextmenu="contextmenuShow2">
       <contextmenu-item
