@@ -1,28 +1,45 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
-        <TagsView />
-      </div>
-      <app-main />
+  <div class="main-container">
+    <div class="navbar">
+      <logo :collapse="false" />
+      <el-menu
+        :default-active="'1'"
+        class="el-menu-reset"
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#26B99A"
+      >
+        <el-submenu index="2">
+          <template slot="title">我的工作台</template>
+          <el-menu-item index="2-1">选项1</el-menu-item>
+          <el-menu-item index="2-2">选项2</el-menu-item>
+          <el-menu-item index="2-3">选项3</el-menu-item>
+          <el-submenu index="2-4">
+            <template slot="title">选项4</template>
+            <el-menu-item index="2-4-1">选项1</el-menu-item>
+            <el-menu-item index="2-4-2">选项2</el-menu-item>
+            <el-menu-item index="2-4-3">选项3</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-menu-item index="3">消息中心</el-menu-item>
+        <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">数据统计</a></el-menu-item>
+      </el-menu>
     </div>
+    <app-main />
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import Logo from './components/Logo'
+import { AppMain } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
   name: 'Layout',
   components: {
-    Navbar,
-    Sidebar,
     AppMain,
-    TagsView
+    Logo
   },
   mixins: [ResizeMixin],
   computed: {
@@ -55,8 +72,21 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
+  .navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    background: #545b63;
+    height: 60px;
+  }
   .main-container{
     background-color: $appBg;
+    display: flex;
+    flex-direction: column;
   }
   .app-wrapper {
     @include clearfix;
@@ -93,5 +123,8 @@ export default {
 
   .mobile .fixed-header {
     width: 100%;
+  }
+  .el-menu-reset{
+    flex: 1;
   }
 </style>

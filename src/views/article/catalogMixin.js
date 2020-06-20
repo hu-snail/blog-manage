@@ -178,8 +178,8 @@ export default {
       event.cancelBubble = true
       this.contextmenuIndex = e.data.key
       this.pid = this.menuData[e.data.key]._id
-      if (this.menuData[e.data.key].children.length) this.contextmenuList[1].isShow = false
-      else this.contextmenuList[1].isShow = true
+      if (this.menuData[e.data.key].children.length) this.contextmenuList[2].isShow = false
+      else this.contextmenuList[2].isShow = true
     },
 
     /**

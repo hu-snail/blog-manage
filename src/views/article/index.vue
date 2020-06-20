@@ -1,9 +1,13 @@
+<!-- @author hujiangjun -->
 <template>
   <div class="app-container">
     <div class="content">
       <div class="left">
         <div class="add-folder">
-          <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
+          <div class="folder-box">
+            <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
+            <el-button icon="el-icon-search" type="text" @click="handleSearch" />
+          </div>
           <div v-show="showAdd" class="add-folder-content">
             <el-input
               v-model="title"
@@ -12,6 +16,8 @@
               @keyup.enter.native="handleConfirm"
             />
           </div>
+          <Search v-show="showSearch" />
+
         </div>
         <div class="menu-list">
           <el-aside width="200px">
@@ -98,6 +104,7 @@
 
 <script>
 import Editor from '@/components/Editor'
+import Search from './components/Search'
 import { getArticle, articleAdd } from '@/api/article'
 import {
   directive,
@@ -107,7 +114,12 @@ import {
 import CatalogMixin from './catalogMixin'
 export default {
   name: 'Article',
-  components: { Editor, Contextmenu, ContextmenuItem },
+  components: {
+    Editor,
+    Contextmenu,
+    ContextmenuItem,
+    Search
+  },
   directives: {
     contextmenu: directive,
     focus: {
@@ -135,11 +147,15 @@ export default {
       doucmentTitle: '',
       showAdd: false,
       showDocumentAdd: false,
+      showSearch: false,
       isFolder: true // 是否是一级菜单
     }
   },
 
   methods: {
+    handleSearch() {
+      this.showSearch = true
+    },
     /**
      * 保存文档
      * @param {*} render HTML渲染数据
