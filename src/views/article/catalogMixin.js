@@ -34,6 +34,10 @@ export default {
         title: '删除文档',
         icon: 'document-remove',
         type: 'documentRemove'
+      }, {
+        title: '文章配置',
+        icon: 'setting',
+        type: 'Setting'
       }],
       contextmenuIndex: 0,
       contextmenuItemIndex: 0
@@ -63,6 +67,7 @@ export default {
         this.menuData[this.contextmenuIndex].isAdd = true
       }
       if (type === 'documentRemove' || type === 'folderRemove') this.handleDeleteFile()
+      if (type === 'Setting') this.drawer = true
     },
 
     /** 修改文档标题 */

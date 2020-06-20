@@ -14,13 +14,14 @@
             />
           </div>
           <div v-show="!showSearch" class="folder-box">
-            <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
+            <el-button icon="iconfont icon-huabanfuben" type="text" @click="handleAddFolder">新建目录</el-button>
             <el-button icon="el-icon-search" type="text" @click="handleSearch" />
           </div>
           <div v-show="showAdd" class="add-folder-content">
             <el-input
               v-model="title"
               v-focus
+              placeholder="请输入目录名称"
               @blur="handleBlurFolder"
               @keyup.enter.native="handleConfirm"
             />
@@ -47,11 +48,12 @@
                     ref="documentInput"
                     v-model="doucmentTitle"
                     v-focus
+                    placeholder="请输入文档名称"
                     @blur="handleChangeDocument(index)"
                     @keyup.enter.native="handleChangeDocument(index)"
                   />
                 </div>
-                <template slot="title"><i class="el-icon-folder" />{{ item.title }}</template>
+                <template slot="title"><i class="el-icon iconfont icon-huabanfuben" />{{ item.title }}</template>
                 <el-menu-item
                   v-for="(option, i) in item.children"
                   :key="i"
@@ -59,7 +61,7 @@
                   :index="index.toString() + '-' + i.toString()"
                   @click.native="changeCatalogId(option.id)"
                 >
-                  <i class="el-icon-document" />
+                  <i class="iconfont icon-financial_markdown" />
                   {{ option.title }}.md
                 </el-menu-item>
               </el-submenu>
@@ -95,7 +97,7 @@
       </span>
     </el-dialog>
     <!--  contextmenu start -->
-    <contextmenu ref="contextmenu" @contextmenu="contextmenuShow">
+    <contextmenu ref="contextmenu" theme="dark" @contextmenu="contextmenuShow">
       <template v-for="(item, index) in contextmenuList">
         <contextmenu-item
           v-if="item.isShow"
@@ -107,7 +109,7 @@
         </contextmenu-item>
       </template>
     </contextmenu>
-    <contextmenu ref="contextmenu2" @contextmenu="contextmenuShow2">
+    <contextmenu ref="contextmenu2" theme="dark" @contextmenu="contextmenuShow2">
       <contextmenu-item
         v-for="(item, index) in contextmenuItemList"
         :key="index"

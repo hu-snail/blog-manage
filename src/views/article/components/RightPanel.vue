@@ -162,6 +162,11 @@ export default {
             outline: none;
         }
     }
+    .el-drawer__body{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
     .el-tag{
         margin-right: 5px;
         margin-top: 5px;
@@ -172,6 +177,17 @@ export default {
     }
     .el-tag+.el-tag{
         margin-left: 0!important;
+    }
+    .el-input__inner, .el-textarea__inner{
+        border: none;
+        padding-left: 0;
+    }
+    .el-input, .el-textarea{
+        border-bottom: 1px solid #eee;
+    }
+    .el-button--primary{
+        background-color: #30b99a;
+        border-color: #30b99a;
     }
 }
 </style>
