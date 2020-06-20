@@ -7,11 +7,11 @@
         position: fixed;
         top: 60px;
         right: 0;
-        left: 200px;
+        left: 260px;
         overflow-x: hidden;
       }
       .left{
-        width: 200px;
+        width: 260px;
         height: 100vh;
         background-color: #fff;
         position: fixed;
@@ -65,12 +65,13 @@
           .el-menu-item{
             border-left: 3px solid #fff;
             &:hover{
-                border-left: 3px solid #409eff;
-                background-color: #b6daff26
+                border-left: 3px solid #26B99A;
+                background-color: #f0fffc
             }
             &.is-active{
-                border-left: 3px solid #409eff;
-                background-color: #b6daff26
+                border-left: 3px solid #26B99A;
+                background-color: #f0fffc;
+                color: #26B99A!important;
             }
           }
         }

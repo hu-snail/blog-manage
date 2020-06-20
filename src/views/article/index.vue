@@ -4,7 +4,16 @@
     <div class="content">
       <div class="left">
         <div class="add-folder">
-          <div class="folder-box">
+          <div v-show="showSearch" class="search-box">
+            <el-input
+              v-model="keyword"
+              v-focus
+              placeholder="输入文章标题"
+              suffix-icon="el-icon-search"
+              @blur="handleSearchBlur"
+            />
+          </div>
+          <div v-show="!showSearch" class="folder-box">
             <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
             <el-button icon="el-icon-search" type="text" @click="handleSearch" />
           </div>
@@ -16,11 +25,14 @@
               @keyup.enter.native="handleConfirm"
             />
           </div>
-          <Search v-show="showSearch" />
-
         </div>
-        <div class="menu-list">
-          <el-aside width="200px">
+        <div v-if="showSearch" class="search-list">
+          <div class="search-item">测试</div>
+          <div class="search-item">测试</div>
+          <div class="search-item">测试</div>
+        </div>
+        <div v-show="!showSearch" class="menu-list">
+          <el-aside width="260px">
             <el-menu :default-openeds="openedIndex">
               <el-submenu
                 v-for="(item, index) in menuData"
@@ -61,6 +73,12 @@
           v-model="form.content"
           @on-save="handleSave"
         />
+        <RightPanel
+          :drawer="drawer"
+          @on-open="drawer = true"
+          @on-close="drawer = false"
+        />
+
       </div>
     </div>
     <el-dialog
@@ -104,7 +122,6 @@
 
 <script>
 import Editor from '@/components/Editor'
-import Search from './components/Search'
 import { getArticle, articleAdd } from '@/api/article'
 import {
   directive,
@@ -112,13 +129,14 @@ import {
   ContextmenuItem
 } from 'v-contextmenu'
 import CatalogMixin from './catalogMixin'
+import RightPanel from './components/RightPanel'
 export default {
   name: 'Article',
   components: {
     Editor,
     Contextmenu,
     ContextmenuItem,
-    Search
+    RightPanel
   },
   directives: {
     contextmenu: directive,
@@ -126,7 +144,6 @@ export default {
       update: function(el) {
         el.querySelector('input').focus()
       }
-
     }
   },
   mixins: [CatalogMixin],
@@ -145,14 +162,20 @@ export default {
       listLoading: true,
       title: '',
       doucmentTitle: '',
+      keyword: '',
       showAdd: false,
       showDocumentAdd: false,
       showSearch: false,
+      drawer: false,
       isFolder: true // 是否是一级菜单
     }
   },
 
   methods: {
+    handleSearchBlur() {
+      this.showSearch = false
+      this.keyword = ''
+    },
     handleSearch() {
       this.showSearch = true
     },
@@ -195,4 +218,19 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~@/styles/article.scss';
+.search-box{
+    padding: 10px 0;
+    >>> .el-input__icon{
+       line-height: 26px;
+    }
+}
+.search-list {
+  padding: 10px 0;
+  .search-item{
+    padding: 15px 20px;
+    color: #666;
+    border-bottom: 1px dashed #eee;
+    font-size: 14px;
+  }
+}
 </style>
