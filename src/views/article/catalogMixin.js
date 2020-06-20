@@ -62,6 +62,7 @@ export default {
     handleOperat(type) {
       if (type === 'edit') this.handleResetTitle()
       if (type === 'documentAdd') {
+        this.$refs['submenu-' + this.contextmenuIndex][0].$parent.open(this.contextmenuIndex)
         this.showDocumentAdd = true
         this.$refs.documentInput.focus
         this.menuData[this.contextmenuIndex].isAdd = true
@@ -72,6 +73,7 @@ export default {
 
     /** 修改文档标题 */
     handleResetTitle() {
+      console.log(this.contextmenuIndex, this.contextmenuIndex)
       this.resetTitle = this.isFolder
         ? this.menuData[this.contextmenuIndex].title
         : this.menuData[this.contextmenuIndex].children[this.contextmenuItemIndex].title
@@ -130,8 +132,11 @@ export default {
     /** 新增二级目录 */
     handleChangeDocument(index) {
       if (this.doucmentTitle) {
-        addCataLog({ id: this.menuData[index].id, title: this.doucmentTitle }).then(res => {
+        addCataLog({ id: this.menuData[index].id, title: this.doucmentTitle, pindex: index }).then(res => {
+          this.active = index + '-' + 0
           this.getCataLogList()
+          console.log(res.data)
+          this.changeCatalogId(res.data)
           this.menuData[index].isAdd = false
           this.$message.success('新增成功')
         }).catch(() => this.$message.error('新增失败'))
@@ -196,11 +201,11 @@ export default {
       event.preventDefault()
       event.cancelBubble = true
       this.contextmenuItemIndex = e.data.key
+      this.contextmenuIndex = this.openedIndex = e.child.indexPath[0]
     },
 
     handleSubMenu(index, _id) {
-      this.contextmenuIndex = index
-      this.openedIndex = [index.toString()]
+      this.contextmenuIndex = this.openedIndex = index
     }
   }
 }

@@ -34,9 +34,10 @@
         </div>
         <div v-show="!showSearch" class="menu-list">
           <el-aside width="260px">
-            <el-menu :default-openeds="openedIndex">
+            <el-menu :default-active="active">
               <el-submenu
                 v-for="(item, index) in menuData"
+                :ref="'submenu-' + index"
                 :key="index"
                 v-contextmenu:contextmenu
                 :index="index.toString()"
@@ -151,10 +152,8 @@ export default {
   mixins: [CatalogMixin],
   data() {
     return {
-      list: null,
-      left: 0,
-      top: 0,
-      openedIndex: ['0'],
+      active: '0-0',
+      openedIndex: 0,
       dialogVisible: false,
       resetTitle: '',
       menuData: [],
