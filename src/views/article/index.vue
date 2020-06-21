@@ -8,20 +8,21 @@
             <el-input
               v-model="keyword"
               v-focus
-              placeholder="输入文章标题"
+              placeholder="输入关键词"
               suffix-icon="el-icon-search"
               @blur="handleSearchBlur"
+              @keyup.enter.native="onSearch"
             />
           </div>
           <div v-show="!showSearch" class="folder-box">
-            <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
-            <el-button icon="el-icon-search" type="text" @click="handleSearch" />
+            <el-button icon="el-icon-plus" type="text" @click="handleAddFolder">新建目录</el-button>
+            <el-button icon="iconfont icon-nav-search" type="text" @click="handleSearch" />
           </div>
         </div>
         <div v-if="showSearch" class="search-list">
-          <div class="search-item">测试</div>
-          <div class="search-item">测试</div>
-          <div class="search-item">测试</div>
+          <div v-for="item in searchList" :key="item.id" class="search-item">
+            {{ item.title }}
+          </div>
         </div>
         <div v-show="!showSearch" class="menu-list">
           <div v-show="showAdd" class="add-folder-content">
@@ -55,7 +56,7 @@
                   />
                 </div>
 
-                <template slot="title"><i :class="item.opened ? 'el-icon-folder-opened' : 'el-icon-folder'" />{{ item.title }}</template>
+                <template slot="title"><i class="iconfont" :class="item.opened ? 'icon-folder-open' : 'icon-folder'" />{{ item.title }}</template>
                 <el-menu-item
                   v-for="(option, i) in item.children"
                   :key="i"
@@ -126,7 +127,7 @@
 
 <script>
 import Editor from '@/components/Editor'
-import { getArticle, articleAdd } from '@/api/article'
+import { getArticle, articleAdd, searchArticles } from '@/api/article'
 import {
   directive,
   Contextmenu,
@@ -158,6 +159,7 @@ export default {
       dialogVisible: false,
       resetTitle: '',
       menuData: [],
+      searchList: [],
       form: {},
       catalogId: 0,
       pid: 0,
@@ -174,6 +176,11 @@ export default {
   },
 
   methods: {
+    onSearch() {
+      searchArticles({ keyword: this.keyword }).then(res => {
+        this.searchList = res.data
+      })
+    },
     handleSearchBlur() {
       this.showSearch = false
       this.keyword = ''
@@ -221,12 +228,12 @@ export default {
 <style lang="scss" scoped>
 @import '~@/styles/article.scss';
 .search-box{
-    padding: 10px 0;
     >>> .el-input__icon{
        line-height: 26px;
     }
 }
 .search-list {
+  margin-top: 60px;
   padding: 10px 0;
   .search-item{
     padding: 15px 20px;

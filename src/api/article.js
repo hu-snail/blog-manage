@@ -15,3 +15,12 @@ export function articleAdd(params) {
     data: params
   })
 }
+
+export function searchArticles(params) {
+  return request({
+    url: 'searchArticles',
+    method: 'get',
+    params
+  })
+}
+

@@ -19,7 +19,7 @@
     >
       <div class="drawer-body">
         <p class="title">标题</p>
-        <el-input v-model="form.name" placeholder="请输入文章标题" />
+        <el-input v-model="form.title" placeholder="请输入文章标题" />
         <p class="title">摘要</p>
         <el-input
           v-model="form.region"
@@ -32,8 +32,9 @@
         <p class="title">标签</p>
         <div class="tag">
           <el-tag
-            v-for="(tag, index) in dynamicTags"
+            v-for="(tag, index) in form.dynamicTags"
             :key="index"
+            type="success"
             closable
             :disable-transitions="false"
             @close="handleClose1(tag)"
@@ -49,7 +50,7 @@
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm"
           />
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新增标签</el-button>
+          <el-button v-else class="button-new-tag" type="success" size="small" @click="showInput">+ 新增标签</el-button>
         </div>
       </div>
       <div class="footer-bottom">
@@ -70,7 +71,7 @@ export default {
     return {
       title: '',
       form: {},
-      dynamicTags: ['标签一', '标签二', '标签三'],
+      dynamicTags: ['标签一', '标签二'],
       inputVisible: false,
       inputValue: ''
 
