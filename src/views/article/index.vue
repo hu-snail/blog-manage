@@ -17,6 +17,13 @@
             <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
             <el-button icon="el-icon-search" type="text" @click="handleSearch" />
           </div>
+        </div>
+        <div v-if="showSearch" class="search-list">
+          <div class="search-item">测试</div>
+          <div class="search-item">测试</div>
+          <div class="search-item">测试</div>
+        </div>
+        <div v-show="!showSearch" class="menu-list">
           <div v-show="showAdd" class="add-folder-content">
             <el-input
               v-model="title"
@@ -26,13 +33,6 @@
               @keyup.enter.native="handleConfirm"
             />
           </div>
-        </div>
-        <div v-if="showSearch" class="search-list">
-          <div class="search-item">测试</div>
-          <div class="search-item">测试</div>
-          <div class="search-item">测试</div>
-        </div>
-        <div v-show="!showSearch" class="menu-list">
           <el-aside width="260px">
             <el-menu :default-active="active">
               <el-submenu

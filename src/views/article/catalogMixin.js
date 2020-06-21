@@ -53,6 +53,7 @@ export default {
       getCataLogList().then(res => {
         this.menuData = res.data.list
         this.menuData[0].opened = true
+        if (this.menuData[0].children.length) this.changeCatalogId(this.menuData[0].children[0].id)
       })
     },
 
@@ -136,7 +137,6 @@ export default {
         addCataLog({ id: this.menuData[index].id, title: this.doucmentTitle, pindex: index }).then(res => {
           this.active = index + '-' + 0
           this.getCataLogList()
-          console.log(res.data)
           this.changeCatalogId(res.data)
           this.menuData[index].isAdd = false
           this.$message.success('新增成功')
