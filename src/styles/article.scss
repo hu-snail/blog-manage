@@ -40,11 +40,11 @@
             -ms-user-select:none;
             -khtml-user-select:none;
               user-select:none;
-            .el-menu-item{
+            .el-menu-item, .el-submenu__title{
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                padding: 0 15px;
+                padding: 0 35px;
             }
           }
           .el-input__inner{

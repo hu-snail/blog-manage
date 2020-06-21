@@ -14,7 +14,7 @@
             />
           </div>
           <div v-show="!showSearch" class="folder-box">
-            <el-button icon="iconfont icon-huabanfuben" type="text" @click="handleAddFolder">新建目录</el-button>
+            <el-button icon="el-icon-folder-add" type="text" @click="handleAddFolder">新建目录</el-button>
             <el-button icon="el-icon-search" type="text" @click="handleSearch" />
           </div>
           <div v-show="showAdd" class="add-folder-content">
@@ -42,7 +42,7 @@
                 v-contextmenu:contextmenu
                 :index="index.toString()"
                 :class="{'no-data': !item.children.length}"
-                @click.native="handleSubMenu(index, item._id)"
+                @click.native.prevent="handleSubMenu(index, item._id)"
               >
                 <div v-show="item.isAdd" class="add-document">
                   <el-input
@@ -54,13 +54,14 @@
                     @keyup.enter.native="handleChangeDocument(index)"
                   />
                 </div>
-                <template slot="title"><i class="el-icon iconfont icon-huabanfuben" />{{ item.title }}</template>
+
+                <template slot="title"><i :class="item.opened ? 'el-icon-folder-opened' : 'el-icon-folder'" />{{ item.title }}</template>
                 <el-menu-item
                   v-for="(option, i) in item.children"
                   :key="i"
                   v-contextmenu:contextmenu2
                   :index="index.toString() + '-' + i.toString()"
-                  @click.native="changeCatalogId(option.id)"
+                  @click.native.stop="changeCatalogId(option.id)"
                 >
                   <i class="iconfont icon-financial_markdown" />
                   {{ option.title }}.md

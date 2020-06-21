@@ -52,6 +52,7 @@ export default {
     getCataLogList() {
       getCataLogList().then(res => {
         this.menuData = res.data.list
+        this.menuData[0].opened = true
       })
     },
 
@@ -205,6 +206,8 @@ export default {
     },
 
     handleSubMenu(index, _id) {
+      this.menuData[index].opened = !this.menuData[index].opened
+      this.menuData.splice(index, 1, this.menuData[index])
       this.contextmenuIndex = this.openedIndex = index
     }
   }
