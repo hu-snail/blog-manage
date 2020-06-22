@@ -1,14 +1,6 @@
 <!-- 右侧面板 -->
 <template>
   <div class="right-panel">
-    <el-button
-      v-show="!drawer"
-      type="text"
-      class="setting"
-      icon="el-icon-setting"
-      @click="openDrawer"
-    />
-
     <el-drawer
       size="350px"
       :modal="false"
@@ -22,19 +14,19 @@
         <el-input v-model="form.title" placeholder="请输入文章标题" />
         <p class="title">摘要</p>
         <el-input
-          v-model="form.region"
+          v-model="form.gist"
           placeholder="请输入摘要内容"
           type="textarea"
-          :autosize="{ minRows: 3, maxRows: 10}"
+          :autosize="{ minRows: 5, maxRows: 10}"
           maxlength="200"
           show-word-limit
         />
         <p class="title">标签</p>
         <div class="tag">
           <el-tag
-            v-for="(tag, index) in form.dynamicTags"
+            v-for="(tag, index) in form.tags"
             :key="index"
-            type="success"
+            type="primary"
             closable
             :disable-transitions="false"
             @close="handleClose1(tag)"
@@ -50,11 +42,11 @@
             @keyup.enter.native="handleInputConfirm"
             @blur="handleInputConfirm"
           />
-          <el-button v-else class="button-new-tag" type="success" size="small" @click="showInput">+ 新增标签</el-button>
+          <el-button v-else class="button-new-tag" type="primary" size="small" @click="showInput">+ 新增标签</el-button>
         </div>
       </div>
       <div class="footer-bottom">
-        <el-button type="primary" class="save-btn">保 存</el-button>
+        <el-button type="primary" class="save-btn" @click="handleSave">保 存</el-button>
       </div>
 
     </el-drawer>
@@ -65,12 +57,17 @@
 export default {
   components: {},
   props: {
-    drawer: Boolean
+    drawer: Boolean,
+    form: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   data() {
     return {
       title: '',
-      form: {},
       dynamicTags: ['标签一', '标签二'],
       inputVisible: false,
       inputValue: ''
@@ -81,6 +78,9 @@ export default {
   computed: {},
 
   methods: {
+    handleSave() {
+      this.$emit('on-save')
+    },
     openDrawer() {
       this.$emit('on-open')
     },
@@ -88,7 +88,7 @@ export default {
       this.$emit('on-close')
     },
     handleClose1(tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+      this.form.tags.splice(this.form.tags.indexOf(tag), 1)
     },
 
     showInput() {
@@ -101,7 +101,7 @@ export default {
     handleInputConfirm() {
       const inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue)
+        this.form.tags.push(inputValue)
       }
       this.inputVisible = false
       this.inputValue = ''
@@ -185,10 +185,6 @@ export default {
     }
     .el-input, .el-textarea{
         border-bottom: 1px solid #eee;
-    }
-    .el-button--primary{
-        background-color: #30b99a;
-        border-color: #30b99a;
     }
 }
 </style>

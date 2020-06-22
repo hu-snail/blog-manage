@@ -5,12 +5,12 @@
       <div class="left">
         <div class="add-folder">
           <div v-show="showSearch" class="search-box">
+            <i class="el-icon-back" @click="handleSearchBack" />
             <el-input
               v-model="keyword"
               v-focus
-              placeholder="输入关键词"
+              placeholder="输入关键词后按回车"
               suffix-icon="el-icon-search"
-              @blur="handleSearchBlur"
               @keyup.enter.native="onSearch"
             />
           </div>
@@ -20,8 +20,9 @@
           </div>
         </div>
         <div v-if="showSearch" class="search-list">
-          <div v-for="item in searchList" :key="item.id" class="search-item">
-            {{ item.title }}
+          <div v-for="item in searchList" :key="item.id" class="search-item" @click.prevent="changeCatalogId(item.catalogId)">
+            <div class="search-item-title" v-html="item.title" />
+            <div class="search-item-desc" v-html="item.gist" />
           </div>
         </div>
         <div v-show="!showSearch" class="menu-list">
@@ -79,7 +80,9 @@
           @on-save="handleSave"
         />
         <RightPanel
+          :form="form"
           :drawer="drawer"
+          @on-save="handleSave"
           @on-open="drawer = true"
           @on-close="drawer = false"
         />
@@ -160,7 +163,9 @@ export default {
       resetTitle: '',
       menuData: [],
       searchList: [],
-      form: {},
+      form: {
+        tags: []
+      },
       catalogId: 0,
       pid: 0,
       listLoading: true,
@@ -177,11 +182,17 @@ export default {
 
   methods: {
     onSearch() {
+      this.searchList = []
       searchArticles({ keyword: this.keyword }).then(res => {
-        this.searchList = res.data
+        res.data.forEach(item => {
+          if (item.title) item.title = item.title.replace(this.keyword, `<span class="hight-value">${this.keyword}</span>`)
+          if (item.gist) item.gist = item.gist.replace(this.keyword, `<span class="hight-value">${this.keyword}</span>`)
+          this.searchList.push(item)
+        })
       })
     },
-    handleSearchBlur() {
+    handleSearchBack() {
+      this.searchList = []
       this.showSearch = false
       this.keyword = ''
     },
@@ -194,8 +205,13 @@ export default {
      */
     handleSave(render) {
       const renderContent = render
-      if (this.form.content) this.articleAdd(renderContent)
-      else this.$message.warning('请填写文档内容')
+      if (this.form.content) {
+        if (this.form.title) this.articleAdd(renderContent)
+        else {
+          this.$message.warning('请完善文章配置信息')
+          this.drawer = true
+        }
+      } else this.$message.warning('请填写文档内容')
     },
 
     changeCatalogId(id) {
@@ -216,8 +232,9 @@ export default {
      */
     articleAdd(renderContent) {
       const catalogId = this.catalogId
-      const { content, _id } = this.form
-      articleAdd({ catalogId, content, _id, renderContent }).then(res => {
+      const { content, _id, title, tags, gist } = this.form
+      articleAdd({ catalogId, content, _id, renderContent, title, tags, gist }).then(res => {
+        this.drawer = false
         this.$message.success('保存文档成功')
         this.getArticle()
       }).catch(() => this.$message.error('保存文档失败'))
@@ -240,6 +257,24 @@ export default {
     color: #666;
     border-bottom: 1px dashed #eee;
     font-size: 14px;
+    &-title{
+      font-size: 16px;
+      font-weight: 600;
+      padding: 5px 0;
+    }
+    &-desc{
+      padding: 5px 0;
+      letter-spacing: 1px;
+      line-height: 1.5;
+      font-size: 14px;
+      color: #999;
+    }
+    &:hover{
+      cursor: pointer;
+      .search-item-desc{
+        color: #333;
+      }
+    }
   }
 }
 </style>

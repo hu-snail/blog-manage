@@ -21,6 +21,19 @@
         overflow-y: auto;
         overflow-x: hidden;
         border-right: 1px solid #f2f6fc;
+        .search-box{
+          display: flex;
+          align-items: center;
+          .el-icon-back {
+            padding-right: 10px;
+            &:hover{
+              cursor: pointer;
+            }
+          }
+        }
+        .icon-financial_markdown{
+          color: #26B99A;
+        }
         .menu-list{
             margin-top: 60px;
         }

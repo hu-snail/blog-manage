@@ -66,16 +66,18 @@ export default {
       if (type === 'documentAdd') {
         this.$refs['submenu-' + this.contextmenuIndex][0].$parent.open(this.contextmenuIndex)
         this.showDocumentAdd = true
-        this.$refs.documentInput.focus
         this.menuData[this.contextmenuIndex].isAdd = true
       }
       if (type === 'documentRemove' || type === 'folderRemove') this.handleDeleteFile()
-      if (type === 'Setting') this.drawer = true
+      if (type === 'Setting') {
+        this.active = this.contextmenuIndex + '-' + this.contextmenuItemIndex
+        this.changeCatalogId(this.menuData[this.contextmenuIndex].children[this.contextmenuItemIndex].id)
+        this.drawer = true
+      }
     },
 
     /** 修改文档标题 */
     handleResetTitle() {
-      console.log(this.contextmenuIndex, this.contextmenuIndex)
       this.resetTitle = this.isFolder
         ? this.menuData[this.contextmenuIndex].title
         : this.menuData[this.contextmenuIndex].children[this.contextmenuItemIndex].title
