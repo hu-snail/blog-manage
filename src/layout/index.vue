@@ -6,7 +6,7 @@
         :default-active="'1'"
         class="el-menu-reset"
         mode="horizontal"
-        background-color="#545c64"
+        background-color="#2d3e50"
         text-color="#fff"
         active-text-color="#26B99A"
       >
@@ -79,7 +79,7 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
-    background: #545b63;
+    background: #2d3e50;
     height: 60px;
   }
   .main-container{

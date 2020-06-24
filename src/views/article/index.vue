@@ -20,9 +20,15 @@
           </div>
         </div>
         <div v-if="showSearch" class="search-list">
-          <div v-for="item in searchList" :key="item.id" class="search-item" @click.prevent="changeCatalogId(item.catalogId)">
+          <div v-if="searchList.length" class="search-item">
+            共 "<span class="num">{{ searchList.length }}</span>"条结果
+          </div>
+          <div v-for="item in searchList" :key="item.id" class="search-item" @click.prevent="changeArticle(item)">
             <div class="search-item-title" v-html="item.title" />
             <div class="search-item-desc" v-html="item.gist" />
+          </div>
+          <div v-if="!searchList.length" class="search-item">
+            搜索无数据～
           </div>
         </div>
         <div v-show="!showSearch" class="menu-list">
@@ -74,10 +80,10 @@
         </div>
       </div>
       <div class="right">
-        <Editor
-          v-show="catalogId"
+        <VDitor
           v-model="form.content"
-          @on-save="handleSave"
+          :content="form.content"
+          @on-save="handleSaveDocument"
         />
         <RightPanel
           :form="form"
@@ -101,6 +107,28 @@
         <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
         <el-button size="mini" type="primary" @click="handleUpadteTitle">确 定</el-button>
       </span>
+    </el-dialog>
+    <el-dialog
+      title="导出文档"
+      :visible.sync="exportDialog"
+      width="350px"
+    >
+      <div class="dialog-body">
+        <div class="export-btn">
+          <div class="item">
+            <i class="iconfont icon-download" />
+            <p class="text">Markdown</p>
+          </div>
+          <div class="item">
+            <i class="iconfont icon-pdf" />
+            <p class="text">PDF</p>
+          </div>
+          <div class="item">
+            <i class="iconfont icon-html" />
+            <p class="text">HTML</p>
+          </div>
+        </div>
+      </div>
     </el-dialog>
     <!--  contextmenu start -->
     <contextmenu ref="contextmenu" theme="dark" @contextmenu="contextmenuShow">
@@ -129,7 +157,8 @@
 </template>
 
 <script>
-import Editor from '@/components/Editor'
+// import Editor from '@/components/Editor'
+import VDitor from '@/components/VDitor'
 import { getArticle, articleAdd, searchArticles } from '@/api/article'
 import {
   directive,
@@ -141,10 +170,11 @@ import RightPanel from './components/RightPanel'
 export default {
   name: 'Article',
   components: {
-    Editor,
+    // Editor,
     Contextmenu,
     ContextmenuItem,
-    RightPanel
+    RightPanel,
+    VDitor
   },
   directives: {
     contextmenu: directive,
@@ -160,6 +190,7 @@ export default {
       active: '0-0',
       openedIndex: 0,
       dialogVisible: false,
+      exportDialog: false,
       resetTitle: '',
       menuData: [],
       searchList: [],
@@ -181,12 +212,18 @@ export default {
   },
 
   methods: {
+    handleSaveDocument(content, renderContent) {
+      this.articleAdd(content, renderContent)
+    },
     onSearch() {
       this.searchList = []
       searchArticles({ keyword: this.keyword }).then(res => {
         res.data.forEach(item => {
-          if (item.title) item.title = item.title.replace(this.keyword, `<span class="hight-value">${this.keyword}</span>`)
-          if (item.gist) item.gist = item.gist.replace(this.keyword, `<span class="hight-value">${this.keyword}</span>`)
+          const reg = new RegExp(`${this.keyword}`, 'gi')
+          if (item.title) item.title = item.title.replace(reg, `<span class="hight-value">${this.keyword}</span>`)
+          if (item.gist) {
+            item.gist = item.gist.replace(reg, `<span class="hight-value">${this.keyword}</span>`)
+          }
           this.searchList.push(item)
         })
       })
@@ -218,7 +255,9 @@ export default {
       this.catalogId = id
       this.getArticle()
     },
-
+    changeArticle(item) {
+      this.form = item
+    },
     /** 根据栏目id查询文档*/
     getArticle() {
       const catalogId = this.catalogId
@@ -230,13 +269,11 @@ export default {
     /**
      * 文档新增
      */
-    articleAdd(renderContent) {
+    articleAdd(content, renderContent) {
       const catalogId = this.catalogId
-      const { content, _id, title, tags, gist } = this.form
+      const { _id, title, tags, gist } = this.form
       articleAdd({ catalogId, content, _id, renderContent, title, tags, gist }).then(res => {
         this.drawer = false
-        this.$message.success('保存文档成功')
-        this.getArticle()
       }).catch(() => this.$message.error('保存文档失败'))
     }
   }
@@ -249,9 +286,42 @@ export default {
        line-height: 26px;
     }
 }
+.export-btn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  .item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    padding-top: 8px;
+    box-sizing: border-box;
+    width: 80px;
+    height: 80px;
+    &:hover{
+      background-color: #f0fffc;
+    }
+  }
+  .iconfont{
+    color: #26B99A;
+    font-size: 28px;
+    &.icon-pdf{
+      color: #ff5562;
+    }
+    &.icon-html{
+      color: #ff8976;
+    }
+  }
+}
 .search-list {
   margin-top: 60px;
   padding: 10px 0;
+  .num{
+    color: #26B99A;
+  }
   .search-item{
     padding: 15px 20px;
     color: #666;

@@ -35,6 +35,10 @@ export default {
         icon: 'document-remove',
         type: 'documentRemove'
       }, {
+        title: '导出文档',
+        icon: 'download',
+        type: 'Export'
+      }, {
         title: '文章配置',
         icon: 'setting',
         type: 'Setting'
@@ -73,6 +77,10 @@ export default {
         this.active = this.contextmenuIndex + '-' + this.contextmenuItemIndex
         this.changeCatalogId(this.menuData[this.contextmenuIndex].children[this.contextmenuItemIndex].id)
         this.drawer = true
+      }
+      if (type === 'Export') {
+        console.log(11)
+        this.exportDialog = true
       }
     },
 
@@ -186,6 +194,7 @@ export default {
      * @param {*} e 菜单选项
      */
     contextmenuShow(e) {
+      this.$refs.contextmenu2.hide()
       this.isFolder = true
       event.preventDefault()
       event.cancelBubble = true
@@ -200,6 +209,7 @@ export default {
      * @param {*} e 菜单选项
      */
     contextmenuShow2(e) {
+      this.$refs.contextmenu.hide()
       this.isFolder = false
       event.preventDefault()
       event.cancelBubble = true
