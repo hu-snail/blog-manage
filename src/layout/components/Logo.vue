@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'Hu-Snail 博客系统',
+      title: 'Hu-Snail',
       logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
@@ -43,7 +43,7 @@ export default {
 
 .sidebar-logo-container {
   position: relative;
-  width: 200px;
+  width: 260px;
   height: 61px;
   line-height: 61px;
   text-align: center;
@@ -63,10 +63,9 @@ export default {
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 18px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

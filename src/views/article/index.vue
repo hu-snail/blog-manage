@@ -28,7 +28,7 @@
             <div class="search-item-desc" v-html="item.gist" />
           </div>
           <div v-if="!searchList.length" class="search-item">
-            搜索无数据～
+            无数据～
           </div>
         </div>
         <div v-show="!showSearch" class="menu-list">

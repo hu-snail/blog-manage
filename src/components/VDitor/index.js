@@ -26,28 +26,39 @@ export default {
           'italic',
           'strike',
           'link',
-          '|',
           'list',
           'ordered-list',
           'check',
           'outdent',
           'indent',
-          '|',
           'quote',
           'line',
           'code',
           'inline-code',
           'insert-before',
           'insert-after',
-          '|',
           'upload',
           'record',
           'table',
-          '|',
           'undo',
           'redo',
-          '|',
-          'fullscreen'
+          'fullscreen',
+          'edit-mode',
+          'export',
+          'code-theme',
+          'content-theme',
+          {
+            name: 'more',
+            toolbar: [
+              'both',
+              'outline',
+              'preview',
+              'format',
+              'devtools',
+              'info',
+              'help'
+            ]
+          }
         ],
         cache: {
           enable: false

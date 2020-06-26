@@ -16,11 +16,16 @@ export default {
     overflow-y: auto;
     border: 0!important;
     &::-webkit-scrollbar {
-                width: 0px!important;
-            }
+        width: 0px!important;
+    }
     >>> {
         .vditor-toolbar{
+            padding-left: 20px!important;
             border-bottom-color: #f2f6fc;
+        }
+        .vditor-tooltipped{
+            color: #595959;
+            width: 35px;
         }
     }
 }

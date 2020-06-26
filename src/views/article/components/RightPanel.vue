@@ -150,10 +150,9 @@ export default {
 >>> {
     .el-drawer__header{
         height: 60px;
-        background-color: #545b63;
-        color: #fff;
         align-items: center;
         padding: 0 20px;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.06);
         -moz-user-select:none;
                 -webkit-user-select:none;
                 -ms-user-select:none;

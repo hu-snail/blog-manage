@@ -6,8 +6,8 @@
         :default-active="'1'"
         class="el-menu-reset"
         mode="horizontal"
-        background-color="#2d3e50"
-        text-color="#fff"
+        background-color="#fff"
+        text-color="#444"
         active-text-color="#26B99A"
       >
         <el-submenu index="2">
@@ -15,14 +15,8 @@
           <el-menu-item index="2-1">选项1</el-menu-item>
           <el-menu-item index="2-2">选项2</el-menu-item>
           <el-menu-item index="2-3">选项3</el-menu-item>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项1</el-menu-item>
-            <el-menu-item index="2-4-2">选项2</el-menu-item>
-            <el-menu-item index="2-4-3">选项3</el-menu-item>
-          </el-submenu>
         </el-submenu>
-        <el-menu-item index="3">消息中心</el-menu-item>
+        <el-menu-item index="3">笔记中心</el-menu-item>
         <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">数据统计</a></el-menu-item>
       </el-menu>
     </div>
@@ -79,8 +73,9 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;
-    background: #2d3e50;
+    background: #fff;
     height: 60px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.06);
   }
   .main-container{
     background-color: $appBg;
