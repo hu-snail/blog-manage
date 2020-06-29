@@ -84,9 +84,9 @@ export default {
           enable: true
         },
         placeholder: '请输入文档内容...',
-        after: () => {
-          this.contentEditor.setValue(this.value)
-        },
+        // after: () => {
+        //   this.contentEditor.setValue(this.value)
+        // },
         input: (val) => {
           const render = this.contentEditor.getHTML()
           this.$emit('on-save', val, render)

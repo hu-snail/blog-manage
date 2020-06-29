@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="right">
-        <VDitor
+        <v-ditor
           v-model="form.content"
           :content="form.content"
           @on-save="handleSaveDocument"
@@ -158,7 +158,7 @@
 
 <script>
 // import Editor from '@/components/Editor'
-import VDitor from '@/components/VDitor'
+import VDitor from '@/components/VDitor/index.vue'
 import { getArticle, articleAdd, searchArticles } from '@/api/article'
 import {
   directive,
